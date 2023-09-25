@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Client
 from .forms import AddClientForm, AddCommentForm
-from team.models import Team
 
 @login_required
 def clients_list(request):
