@@ -4,6 +4,7 @@ from .forms import AddProductForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
+from .ai_models.ad_generator import get_ad_body, get_ad_title
 
 
 @login_required
@@ -13,6 +14,12 @@ def products_list(request):
         'products': products,
     })
 
+def products_list_all(request):
+    products = Product.objects.all()
+    return render(request, 'product/product_list_all.html', {
+        'products': products,
+    })
+    
 @login_required
 def product_add(request):
     if request.method == 'POST':
@@ -36,10 +43,16 @@ def product_add(request):
 
 @login_required
 def products_detail(request,pk):
-    product = get_object_or_404(Product, pk=pk, team = request.user.userprofile.active_team)
-         
+    product = get_object_or_404(Product, pk=pk)
+    is_owner = False
+    try:
+        if product.team == request.user.userprofile.active_team:
+            is_owner = True
+    except AttributeError:
+        pass     
     return   render(request, 'product/product_detail.html', {
          'product':product,
+         'is_owner':is_owner,
          })    
     
     
@@ -68,4 +81,52 @@ def product_delete(request, pk):
         
         messages.success(request, "The product was deleted.")
         return redirect('products:list')
-       
+
+@login_required
+def generate_ad(request, pk):
+        product = get_object_or_404(Product, team = request.user.userprofile.active_team, pk=pk)
+        
+        ad_title = get_ad_title(product_name= product.name, product_description=product.description)        
+        ad_description = get_ad_body(product_name= product.name, product_description=product.description, product_price=product.price)       
+        if ad_title == "":
+            ad_title = "Check This Out: "+product.name
+        Advertisement.objects.create(
+            product=product,
+            title=ad_title, 
+            description=ad_description
+            )        
+        messages.success(request, "The Ad was created succesfully.")        
+        return redirect('products:list')
+
+
+def ad_list(request):    
+    ads = Advertisement.objects.all()
+    return render(request, 'ad/ad_list.html', {
+        'ads': ads,
+    })
+
+def ad_detail(request,pk):
+    ad = get_object_or_404(Advertisement, pk=pk)
+    is_owner = False
+    try:
+        if ad.product.team == request.user.userprofile.active_team:
+            is_owner = True
+        else:
+            ad.activity += 1  
+            ad.save()  
+    except AttributeError:
+        ad.activity += 1
+        ad.save()
+         
+    return   render(request, 'ad/ad_detail.html', {
+         'ad':ad,
+         'is_owner':is_owner,
+         })    
+    
+@login_required
+def ad_delete(request, pk):
+        ad = get_object_or_404(Advertisement, pk=pk)
+        ad.delete()
+        
+        messages.success(request, "The Ad was deleted.")
+        return redirect('ads:list')    

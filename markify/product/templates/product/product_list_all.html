@@ -6,8 +6,9 @@
     <div class='py-6 px-6'>
 
         <h1 class='text-xl mb-4'>Your Products</h1>
-        <a href='{%url "products:add"%}' class='text-white inline-block py-4 px-6 bg-blue-500 rounded-xl'>Add product</a>
-        <a href='{%url "products:list_all"%}' class='text-white inline-block py-4 px-6 bg-blue-500 rounded-xl'>All Products</a>
+        {%if user.is_authenticated%}
+        <a href='{%url "products:list"%}' class='text-white inline-block py-4 px-6 bg-blue-500 rounded-xl'>Your Products</a>
+        {%endif%}
         {%if products%}
             <div class='flex justify-between mt-6 mb-2'>
                 <p class='py-4 px-2 bg-gray-200 font-semibold w-full'>Name</p>

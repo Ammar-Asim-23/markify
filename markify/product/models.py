@@ -19,6 +19,7 @@ class Advertisement(models.Model):
     product = models.ForeignKey(Product, related_name='advertisements', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    activity = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)    
 
