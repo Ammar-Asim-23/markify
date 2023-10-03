@@ -120,6 +120,7 @@ def ad_detail(request,pk):
          
     return   render(request, 'ad/ad_detail.html', {
          'ad':ad,
+         'description':ad.description,
          'is_owner':is_owner,
          })    
     
