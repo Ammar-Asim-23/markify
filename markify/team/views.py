@@ -21,6 +21,7 @@ def teams_activate(request,pk):
     
     return redirect('teams:detail',pk=pk)  
     
+
 @login_required
 def edit_team(request,pk):
     team = get_object_or_404(Team, created_by=request.user, pk=pk)
@@ -37,6 +38,25 @@ def edit_team(request,pk):
         'team':team,
         'form':form
     })
+@login_required
+def create_team(request):
+    if request.method == 'POST':
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            team = form.save(commit=False)
+            team.created_by = request.user
+            team.save()
+            team.members.add(request.user)
+            team.save()
+            messages.success(request, 'Team created successfully')
+            return redirect('userprofile:myaccount')
+    else:    
+        form = TeamForm()
+    
+    return render(request, 'team/create_team.html',{
+        'form':form
+    })    
+    
     
 @login_required
 def detail(request,pk):

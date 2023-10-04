@@ -6,7 +6,7 @@ from .forms import AddClientForm, AddCommentForm
 
 @login_required
 def clients_list(request):
-    clients = Client.objects.filter(created_by=request.user)
+    clients = Client.objects.filter(team=request.user.userprofile.active_team)
     
     
     return render(request, 'client/client_list.html', {
@@ -15,14 +15,13 @@ def clients_list(request):
 
 @login_required
 def clients_detail(request,pk):
-    client = get_object_or_404(Client, pk=pk,created_by=request.user)
+    client = get_object_or_404(Client, pk=pk,team=request.user.userprofile.active_team)
     if request.method == 'POST':
          form = AddCommentForm(request.POST)
          
          if form.is_valid():
             comment = form.save(commit=False)
             comment.team = request.user.userprofile.active_team
-            comment.created_by = request.user
             comment.client = client
             comment.save()
             
@@ -41,7 +40,6 @@ def add_client(request):
         form = AddClientForm(request.POST)
         if form.is_valid():
             client = form.save(commit=False)
-            client.created_by = request.user
             client.team = request.user.userprofile.active_team
             client.save()
             
@@ -56,9 +54,10 @@ def add_client(request):
         'team':request.user.userprofile.active_team,        
     })    
 
+
 @login_required
 def edit_client(request, pk):
-    client = get_object_or_404(Client, created_by=request.user, pk=pk)    
+    client = get_object_or_404(Client, team=request.user.userprofile.active_team, pk=pk)    
     if request.method == 'POST':
         form = AddClientForm(request.POST, instance=client)
         if form.is_valid():
@@ -75,7 +74,7 @@ def edit_client(request, pk):
 
 @login_required
 def clients_delete(request, pk):
-        client = get_object_or_404(Client, created_by=request.user, pk=pk)
+        client = get_object_or_404(Client, team=request.user.userprofile.active_team, pk=pk)
         client.delete()
         
         messages.success(request, "The client was deleted.")

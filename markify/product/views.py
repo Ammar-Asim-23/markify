@@ -1,3 +1,5 @@
+import json 
+import stripe
 from django.contrib.auth.decorators import login_required
 from .models import Product, Advertisement
 from .forms import AddProductForm
@@ -81,6 +83,12 @@ def product_delete(request, pk):
         
         messages.success(request, "The product was deleted.")
         return redirect('products:list')
+    
+def product_buy(request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        
+        if request.method == 'POST':
+            pass
 
 @login_required
 def generate_ad(request, pk):

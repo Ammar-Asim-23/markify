@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "team",
     'product',
     'userprofile',
+    'payments',
 ]
 
 MIDDLEWARE = [

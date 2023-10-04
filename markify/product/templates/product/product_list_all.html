@@ -5,7 +5,7 @@
 {%block content%}
     <div class='py-6 px-6'>
 
-        <h1 class='text-xl mb-4'>Your Products</h1>
+        <h1 class='text-xl mb-4'>Browse Products</h1>
         {%if user.is_authenticated%}
         <a href='{%url "products:list"%}' class='text-white inline-block py-4 px-6 bg-blue-500 rounded-xl'>Your Products</a>
         {%endif%}
