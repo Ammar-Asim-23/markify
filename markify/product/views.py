@@ -41,7 +41,7 @@ def product_add(request):
         'team':request.user.userprofile.active_team,        
     })   
 
-@login_required
+
 def products_detail(request,pk):
     product = get_object_or_404(Product, pk=pk)
     is_owner = False
