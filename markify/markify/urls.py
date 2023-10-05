@@ -14,6 +14,7 @@ urlpatterns = [
     path('dashboard/teams/', include('team.urls')),
     path('dashboard/products/', include('product.urls')),
     path('dashboard/ads/', include('product.urls_ads')),
+    path('dashboard/campaigns/', include('campaigns.urls')),
     path('dashboard/',include('userprofile.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('about/',about,name="about"),

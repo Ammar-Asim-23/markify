@@ -19,7 +19,13 @@
 
         <p class="font-semibold mb-2 mt-2">Activity</p>
         <p>{{ad.activity}} people viewed this ad</p>  
-
+        
+        <p class="font-semibold mb-2 mt-2">Campaign</p>
+        {%if ad.campaign%}    
+            <p>{{ad.campaign.title}}</p>  
+        {%else%}
+            <p>Not in a campaign</p>  
+        {%endif%}
         <p class="font-semibold mb-2 mt-2">Created At</p>
         <p>{{ad.created_at}}</p>
         
@@ -41,6 +47,7 @@
                 </div>    
             {%endif %}    
         <hr class = "mt-4">
+            <a href="{%url 'ads:add-to-campaign' ad.id %}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">Add to Campaign</a>
             <a href="{%url 'ads:list' %}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">Back to ads</a>
         <hr>
 

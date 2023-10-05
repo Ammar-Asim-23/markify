@@ -32,9 +32,14 @@
         <h1 class = "text-xl mb-4 mt-6 text-semibold">Comments</h1>
 
         <div class="space-y-4">
+            <div class="bg-gray-100 rounded-xl p-4">
             {%for comment in client.comments.all%}
-                <div class="bg-gray-100 rounded-xl p-4">
-                    <p class="px-6 font-semibold ">{{comment.created_by}}</p>
+                
+                    {%if client.created_by is None%}
+                        <p class="px-6 font-semibold ">Anonymous</p>
+                    {%else%}
+                        <p class="px-6 font-semibold ">{{comment.created_by}}</p>
+                    {%endif%}    
                     <p class="mb-2 px-6">{{comment.content}}</p>
                     <p class="text-xs px-6 text-gray-500 mb-4">{{comment.created_at}}</p>
             {%endfor%}

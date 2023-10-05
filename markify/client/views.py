@@ -6,7 +6,7 @@ from .forms import AddClientForm, AddCommentForm
 
 @login_required
 def clients_list(request):
-    clients = Client.objects.filter(team=request.user.userprofile.active_team)
+    clients = Client.objects.all()
     
     
     return render(request, 'client/client_list.html', {
@@ -15,13 +15,15 @@ def clients_list(request):
 
 @login_required
 def clients_detail(request,pk):
-    client = get_object_or_404(Client, pk=pk,team=request.user.userprofile.active_team)
+    client = get_object_or_404(Client, pk=pk)
     if request.method == 'POST':
          form = AddCommentForm(request.POST)
          
          if form.is_valid():
             comment = form.save(commit=False)
             comment.team = request.user.userprofile.active_team
+            if request.user.is_authenticated:
+                comment.created_by = request.user
             comment.client = client
             comment.save()
             
@@ -40,7 +42,6 @@ def add_client(request):
         form = AddClientForm(request.POST)
         if form.is_valid():
             client = form.save(commit=False)
-            client.team = request.user.userprofile.active_team
             client.save()
             
             
@@ -50,14 +51,13 @@ def add_client(request):
     else:    
         form = AddClientForm()
     return render(request, 'client/add_client.html',{
-        'form': form,
-        'team':request.user.userprofile.active_team,        
+        'form': form,       
     })    
 
 
 @login_required
 def edit_client(request, pk):
-    client = get_object_or_404(Client, team=request.user.userprofile.active_team, pk=pk)    
+    client = get_object_or_404(Client, pk=pk)    
     if request.method == 'POST':
         form = AddClientForm(request.POST, instance=client)
         if form.is_valid():
@@ -74,7 +74,7 @@ def edit_client(request, pk):
 
 @login_required
 def clients_delete(request, pk):
-        client = get_object_or_404(Client, team=request.user.userprofile.active_team, pk=pk)
+        client = get_object_or_404(Client, pk=pk)
         client.delete()
         
         messages.success(request, "The client was deleted.")

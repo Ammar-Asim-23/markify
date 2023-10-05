@@ -2,7 +2,7 @@ import json
 import stripe
 from django.contrib.auth.decorators import login_required
 from .models import Product, Advertisement
-from .forms import AddProductForm
+from .forms import AddProductForm, AddToCampaignForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
@@ -139,3 +139,29 @@ def ad_delete(request, pk):
         
         messages.success(request, "The Ad was deleted.")
         return redirect('ads:list')    
+    
+    
+
+@login_required
+def ad_add_campaign(request, pk):
+    ad = get_object_or_404(Advertisement, pk=pk)
+
+    if request.method == 'POST':
+        form = AddToCampaignForm(request.POST)
+        if form.is_valid():
+            selected_campaign = form.cleaned_data['campaign']
+            ad.campaign = selected_campaign  # Associate the selected campaign with the ad
+            ad.save()
+            messages.success(request, "The ad was added to the campaign.")
+            return redirect('ads:list')
+    else:
+        form = AddToCampaignForm()
+
+    return render(request, 'ad/add_campaign.html', {
+        'form': form,
+        'ad': ad,
+    })
+
+
+
+

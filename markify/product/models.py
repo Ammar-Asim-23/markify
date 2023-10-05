@@ -1,6 +1,7 @@
 from django.db import models
 from team.models import Team
 from userprofile.models import User
+from campaigns.models import Campaign
 
 
 class Product(models.Model):
@@ -17,6 +18,7 @@ class Product(models.Model):
 
 class Advertisement(models.Model):
     product = models.ForeignKey(Product, related_name='advertisements', on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, related_name='advertisements', on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     activity = models.IntegerField(default=0)
