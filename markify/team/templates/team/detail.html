@@ -20,7 +20,9 @@
             <p>{{member.username}}</p>
         {%endfor%}
         <hr class='mt-6'>
-        
+        {%if not is_member%}
+        <a href = "{%url 'teams:join' team.id %}" class = 'mt-6 text-white py-2 px-6 bg-blue-500 rounded-xl'>Join Team</a>
+        {%endif%}
         {%if team.created_by == request.user%}
         {%if team_requests%}
             <div class='flex justify-between mt-6 mb-2'>

@@ -77,12 +77,17 @@ def create_team(request):
     
 @login_required
 def detail(request,pk):
-    team = get_object_or_404(Team,members__in=[request.user], pk=pk)
+    team = get_object_or_404(Team, pk=pk)
+    is_member = False
     requests = Request.objects.filter(team=team, accepted = False, declined = False)
     
+    if request.user in team.members.all():
+        is_member = True
+        
     return render(request, 'team/detail.html',{
         'team':team,
         'team_requests':requests,
+        'is_member':is_member,
     })    
 
 
