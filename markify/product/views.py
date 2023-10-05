@@ -98,6 +98,11 @@ def generate_ad(request, pk):
         ad_description = get_ad_body(product_name= product.name, product_description=product.description, product_price=product.price)       
         if ad_title == "":
             ad_title = "Check This Out: "+product.name
+        elif ad_title == "Please provide the ad title for the given product description.":
+            ad_title = "Check This Out: "+product.name
+        elif len(ad_title) < 5:
+            ad_title = "Check This Out: "+product.name     
+            
         Advertisement.objects.create(
             product=product,
             title=ad_title, 
