@@ -26,3 +26,13 @@ class Team(models.Model):
         return self.name
     
     
+class Request(models.Model):
+    user = models.ForeignKey(User, related_name='requests', on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, related_name='requests', on_delete=models.CASCADE)
+    accepted = models.BooleanField(default=False)
+    declined = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return  self.user.username
+    

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Team
+from .models import Team, Request
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import TeamForm
@@ -38,6 +38,23 @@ def edit_team(request,pk):
         'team':team,
         'form':form
     })
+
+@login_required
+def list_teams_all(request):
+    teams = Team.objects.all()
+    return render(request, 'team/teams_list_all.html', {
+        'teams': teams
+    })
+
+
+@login_required
+def join_team(request,pk):
+    team = get_object_or_404(Team, pk=pk) 
+    Request.objects.create(user=request.user, team=team)
+    messages.success(request, 'Request sent successfully')
+    return redirect('teams:detail',pk=pk)
+
+    
 @login_required
 def create_team(request):
     if request.method == 'POST':
@@ -61,7 +78,28 @@ def create_team(request):
 @login_required
 def detail(request,pk):
     team = get_object_or_404(Team,members__in=[request.user], pk=pk)
+    requests = Request.objects.filter(team=team, accepted = False, declined = False)
     
     return render(request, 'team/detail.html',{
-        'team':team
+        'team':team,
+        'team_requests':requests,
     })    
+
+
+@login_required
+def accept(request,pk, request_id):
+    team = get_object_or_404(Team, created_by=request.user, pk=pk)
+    request = get_object_or_404(Request, pk=request_id)
+    request.accepted = True
+    request.save()
+    team.members.add(request.user)
+    team.save()
+    return redirect('teams:detail',pk=pk)
+
+@login_required
+def decline(request,pk, request_id):
+    team = get_object_or_404(Team, created_by=request.user, pk=pk)
+    request = get_object_or_404(Request, pk=request_id)
+    request.declined = True
+    request.save()
+    return redirect('teams:detail',pk=pk)
