@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'product',
     'userprofile',
     'payments',
+    'campaigns',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_PUBLIC_KEY = 'pk_test_51NxAUzKL8XFjSQqRitMjMYunwAUpfSCyCWtol0SMpbMk5qMBITyR5eM27FxLhK8RrCnrJEn822lZj8wQgfDHf1aH007a8vNr0Q'
 STRIPE_SECRET_KEY = 'sk_test_51NxAUzKL8XFjSQqRpgZtZv08WbD5Rgenc6ptyZpwFg0zMCbPZmJPzQwQyXzxsvL0GMWRy3FJMVSbZt4zlVAlsVDm00V91DxyYN'
 STRIPE_WEBHOOK_SECRET = ''
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = 'markify171@gmail.com'
+EMAIL_HOST_PASSWORD = 'markifyadmin171'
+EMAIL_PORT = '2525'
