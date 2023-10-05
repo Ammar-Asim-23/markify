@@ -1,3 +1,4 @@
 venv/
 markify/product/ai_models/key.py
 markify/misc/mappings.json
+misc/mappings.json
