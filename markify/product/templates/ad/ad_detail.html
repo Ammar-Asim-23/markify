@@ -45,9 +45,14 @@
                         {% post_to_facebook ad.title object_or_url%}
                     </h2>    
                 </div>    
+                <hr class = "mt-4">
+                <a href="{%url 'ads:add-to-campaign' ad.id %}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">Add to Campaign</a>    
             {%endif %}    
-        <hr class = "mt-4">
-            <a href="{%url 'ads:add-to-campaign' ad.id %}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">Add to Campaign</a>
+        
+        <hr class = "mt-6">
+            {%if not request.user.is_authenticated%}    
+            <a href = "{%url 'campaigns:campaign-client' ad.id%}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">I am Interested</a>
+            {%endif%}
             <a href="{%url 'ads:list' %}" class="py-3 px-4 bg-blue-800 text-white rounded-xl">Back to ads</a>
         <hr>
 
