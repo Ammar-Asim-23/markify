@@ -1,5 +1,6 @@
 import json 
 import stripe
+from concurrent.futures import ThreadPoolExecutor
 from django.contrib.auth.decorators import login_required
 from .models import Product, Advertisement
 from .forms import AddProductForm, AddToCampaignForm
@@ -94,10 +95,19 @@ def product_buy(request, pk):
 def generate_ad(request, pk):
         product = get_object_or_404(Product, team = request.user.userprofile.active_team, pk=pk)
         
-        ad_title = get_ad_title(product_name= product.name, product_description=product.description)        
-        ad_description = get_ad_body(product_name= product.name, product_description=product.description, product_price=product.price)       
+        with ThreadPoolExecutor() as executor:
+            ad_description = executor.submit(get_ad_body,product_name= product.name, product_description=product.description, product_price=product.price)
+            ad_title = executor.submit(get_ad_title,product_name= product.name, product_description=product.description)
+            ad_title = ad_title.result()
+            ad_description = ad_description.result()
+
         if ad_title == "":
             ad_title = "Check This Out: "+product.name
+        elif ad_title == "Please provide the ad title.":
+            ad_title = "Check This Out: "+product.name    
+        elif ad_title.split()[0] == 'Answer:':
+            title =ad_title
+            ad_title = ' '.join(title.split()[1:]) 
         elif ad_title == "Please provide the ad title for the given product description.":
             ad_title = "Check This Out: "+product.name
         elif len(ad_title) < 5:
