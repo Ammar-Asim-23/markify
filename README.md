@@ -5,12 +5,12 @@ _Markify_ is a Smart Digital Marketting Platform designed to help you market you
 ### Key Features
 
 Here are some key features of the project:
-  *Save and manage leads and clients
-  *Create and promote ads from products
-  *Share ads on social media
-  *User teams with subscription plans
-  *Customized email service
-  *And much more!
+  - Save and manage leads and clients
+  - Create and promote ads from products
+  - Share ads on social media
+  - User teams with subscription plans
+  - Customized email service
+  - And much more!
 
 ### Future Expansions
 
