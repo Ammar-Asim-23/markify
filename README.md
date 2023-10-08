@@ -15,9 +15,9 @@ Here are some key features of the project:
 ### Future Expansions
 
 This project is still under development! Here is what we will do in future expansion:
-  *Integrate the products with stripe payment gateway so it is possible to buy products from our website.
-  *Currently we are using smtp4dev to send emails in a testing enviroment but before production we have to change the EMAIL_HOST to a production grade smtp.
-  *Deploy the Website!
+  - Integrate the products with stripe payment gateway so it is possible to buy products from our website.
+  - Currently we are using smtp4dev to send emails in a testing enviroment but before production we have to change the EMAIL_HOST to a production grade smtp.
+  - Deploy the Website!
 
 ### Acknowledgements
 
