@@ -1,6 +1,6 @@
 import os
 
-os.environ["REPLICATE_API_TOKEN"]= 'r8_OM3zgZRpJc1N7nNhWrkAKMpT3C853BR3Rvyxd'
+os.environ["REPLICATE_API_TOKEN"]= 'ENTER YOUR API KEY HERE'
 
 import replicate
 
