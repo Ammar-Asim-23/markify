@@ -28,8 +28,13 @@ Special thanks to Bilal Ahmer Founder of SayabiDevs for guiding us throughout ou
 
 Install Docker Desktop
 
+First go to [replicate.com](https://replicate.com/) and register with your Github Account.
+
+Create an API Key and insert it in markify/product/ai_models/ad_generator.py in place of os.environ["REPLICATE_API_TOKEN"]
+
 Use this command in cli
 `docker run --rm -it -p 3000:80 -p 2525:25 rnwood/smtp4dev`
+
 Setup a python enviroment and install requirements.txt .
 
 Then run command
